@@ -1,0 +1,38 @@
+package com.mhi.project.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mhi.project.dao.CustomersDAO;
+import com.mhi.project.dao.VendorDAO;
+import com.mhi.project.model.Customers;
+import com.mhi.project.model.Vendor;
+
+@Service
+public class VendorService {
+	@Autowired
+	private VendorDAO vendorDAO;
+	@Autowired
+	private CustomersDAO customersDAO;
+	
+	public Vendor save(Vendor vendor){
+		System.out.println("service begin");
+		List<Customers> customers=(List<Customers>) vendor.getChildren();
+		System.out.println(customers);
+		for(Customers cus:customers){
+			System.out.println("customer:-");
+			System.out.println(cus);
+			customersDAO.save(cus);
+		}
+		vendor.getVendorName();
+		System.out.println("vender:-");
+		System.out.println(vendor.getVendorName());
+		Vendor vendorcus=new Vendor();
+		vendorcus.setVendorName(vendor.getVendorName());
+		Vendor vendor1=	vendorDAO.save(vendor);
+		return vendor1;
+	}
+
+}
